@@ -1,5 +1,5 @@
+# Integrantes: Fabrizio Cuello, Tihago Pistan Cruz, Rodolfo Paetz.
 # Sistema de Gestión de Aerolínea ✈
-Integrantes: Fabrizio Cuello, Tihago Pistan Cruz, Rodolfo Paetz.
 Este proyecto es un modelo de base de datos relacional para una aerolínea, diseñado para gestionar pasajeros, vuelos, reservas, empleados, equipaje, y más. El sistema busca representar de forma clara y eficiente las relaciones entre las distintas entidades involucradas en la operación diaria de una aerolínea.
 
 ##  Diagrama Entidad-Relación
