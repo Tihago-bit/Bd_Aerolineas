@@ -1,0 +1,297 @@
+-- MySQL dump 10.13  Distrib 8.0.41, for Linux (x86_64)
+--
+-- Host: 127.0.0.1    Database: AerolineasArgentinas
+-- ------------------------------------------------------
+-- Server version	8.0.41-0ubuntu0.22.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `Aeropuertos`
+--
+
+DROP TABLE IF EXISTS `Aeropuertos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Aeropuertos` (
+  `IATA` varchar(5) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `ciudad` varchar(100) DEFAULT NULL,
+  `pais` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`IATA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Aeropuertos`
+--
+
+/*!40000 ALTER TABLE `Aeropuertos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Aeropuertos` ENABLE KEYS */;
+
+--
+-- Table structure for table `Avion`
+--
+
+DROP TABLE IF EXISTS `Avion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Avion` (
+  `id_avion` int NOT NULL AUTO_INCREMENT,
+  `modelo` varchar(100) DEFAULT NULL,
+  `fabricante` varchar(100) DEFAULT NULL,
+  `capacidad` int DEFAULT NULL,
+  `año_fabricacion` int DEFAULT NULL,
+  `matricula` varchar(50) DEFAULT NULL,
+  `id_hangar` int DEFAULT NULL,
+  PRIMARY KEY (`id_avion`),
+  KEY `id_hangar` (`id_hangar`),
+  CONSTRAINT `Avion_ibfk_1` FOREIGN KEY (`id_hangar`) REFERENCES `Hangar` (`id_hangar`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Avion`
+--
+
+/*!40000 ALTER TABLE `Avion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Avion` ENABLE KEYS */;
+
+--
+-- Table structure for table `Checkin`
+--
+
+DROP TABLE IF EXISTS `Checkin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Checkin` (
+  `id_checkin` int NOT NULL AUTO_INCREMENT,
+  `id_reserva` int DEFAULT NULL,
+  `fecha_checkin` datetime DEFAULT NULL,
+  `asiento` varchar(10) DEFAULT NULL,
+  `equipaje_bodega` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id_checkin`),
+  KEY `id_reserva` (`id_reserva`),
+  CONSTRAINT `Checkin_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `Reservas` (`id_reserva`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Checkin`
+--
+
+/*!40000 ALTER TABLE `Checkin` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Checkin` ENABLE KEYS */;
+
+--
+-- Table structure for table `Empleados`
+--
+
+DROP TABLE IF EXISTS `Empleados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Empleados` (
+  `id_empleado` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `puesto` varchar(100) DEFAULT NULL,
+  `fecha_ingreso` date DEFAULT NULL,
+  `salario` decimal(10,2) DEFAULT NULL,
+  `CURP` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_empleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Empleados`
+--
+
+/*!40000 ALTER TABLE `Empleados` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Empleados` ENABLE KEYS */;
+
+--
+-- Table structure for table `Equipaje`
+--
+
+DROP TABLE IF EXISTS `Equipaje`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Equipaje` (
+  `id_equipaje` int NOT NULL AUTO_INCREMENT,
+  `id_checkin` int DEFAULT NULL,
+  `peso` decimal(6,2) DEFAULT NULL,
+  `etiqueta_codigo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_equipaje`),
+  KEY `id_checkin` (`id_checkin`),
+  CONSTRAINT `Equipaje_ibfk_1` FOREIGN KEY (`id_checkin`) REFERENCES `Checkin` (`id_checkin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Equipaje`
+--
+
+/*!40000 ALTER TABLE `Equipaje` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Equipaje` ENABLE KEYS */;
+
+--
+-- Table structure for table `Hangar`
+--
+
+DROP TABLE IF EXISTS `Hangar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Hangar` (
+  `id_hangar` int NOT NULL AUTO_INCREMENT,
+  `IATA` varchar(5) DEFAULT NULL,
+  `cantidad_aviones` int DEFAULT NULL,
+  PRIMARY KEY (`id_hangar`),
+  KEY `IATA` (`IATA`),
+  CONSTRAINT `Hangar_ibfk_1` FOREIGN KEY (`IATA`) REFERENCES `Aeropuertos` (`IATA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Hangar`
+--
+
+/*!40000 ALTER TABLE `Hangar` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Hangar` ENABLE KEYS */;
+
+--
+-- Table structure for table `Pasajeros`
+--
+
+DROP TABLE IF EXISTS `Pasajeros`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Pasajeros` (
+  `dni` int NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `nacionalidad` varchar(50) DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `pasaporte` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`dni`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Pasajeros`
+--
+
+/*!40000 ALTER TABLE `Pasajeros` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Pasajeros` ENABLE KEYS */;
+
+--
+-- Table structure for table `Reservas`
+--
+
+DROP TABLE IF EXISTS `Reservas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Reservas` (
+  `id_reserva` int NOT NULL AUTO_INCREMENT,
+  `id_pasajero` int DEFAULT NULL,
+  `id_vuelo` int DEFAULT NULL,
+  `fecha_reserva` datetime DEFAULT NULL,
+  `precio` decimal(10,2) DEFAULT NULL,
+  `asiento` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id_reserva`),
+  KEY `id_pasajero` (`id_pasajero`),
+  KEY `id_vuelo` (`id_vuelo`),
+  CONSTRAINT `Reservas_ibfk_1` FOREIGN KEY (`id_pasajero`) REFERENCES `Pasajeros` (`dni`),
+  CONSTRAINT `Reservas_ibfk_2` FOREIGN KEY (`id_vuelo`) REFERENCES `Vuelos` (`id_vuelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Reservas`
+--
+
+/*!40000 ALTER TABLE `Reservas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Reservas` ENABLE KEYS */;
+
+--
+-- Table structure for table `Tripulaciones`
+--
+
+DROP TABLE IF EXISTS `Tripulaciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Tripulaciones` (
+  `id_tripulacion` int NOT NULL AUTO_INCREMENT,
+  `id_empleado` int DEFAULT NULL,
+  `rol` varchar(50) DEFAULT NULL,
+  `id_vuelo` int DEFAULT NULL,
+  PRIMARY KEY (`id_tripulacion`),
+  KEY `id_empleado` (`id_empleado`),
+  KEY `id_vuelo` (`id_vuelo`),
+  CONSTRAINT `Tripulaciones_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `Empleados` (`id_empleado`),
+  CONSTRAINT `Tripulaciones_ibfk_2` FOREIGN KEY (`id_vuelo`) REFERENCES `Vuelos` (`id_vuelo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Tripulaciones`
+--
+
+/*!40000 ALTER TABLE `Tripulaciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Tripulaciones` ENABLE KEYS */;
+
+--
+-- Table structure for table `Vuelos`
+--
+
+DROP TABLE IF EXISTS `Vuelos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Vuelos` (
+  `id_vuelo` int NOT NULL AUTO_INCREMENT,
+  `numero_vuelo` varchar(20) DEFAULT NULL,
+  `id_origen` varchar(5) DEFAULT NULL,
+  `id_destino` varchar(5) DEFAULT NULL,
+  `fecha_salida` datetime DEFAULT NULL,
+  `fecha_llegada` datetime DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL,
+  `id_avion` int DEFAULT NULL,
+  PRIMARY KEY (`id_vuelo`),
+  KEY `id_origen` (`id_origen`),
+  KEY `id_destino` (`id_destino`),
+  CONSTRAINT `Vuelos_ibfk_1` FOREIGN KEY (`id_origen`) REFERENCES `Aeropuertos` (`IATA`),
+  CONSTRAINT `Vuelos_ibfk_2` FOREIGN KEY (`id_destino`) REFERENCES `Aeropuertos` (`IATA`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Vuelos`
+--
+
+/*!40000 ALTER TABLE `Vuelos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Vuelos` ENABLE KEYS */;
+
+--
+-- Dumping routines for database 'AerolineasArgentinas'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-08-27 14:36:33
